@@ -1,6 +1,6 @@
 <?php 
 
-namespace App\Compte;
+namespace App\Banque;
  class Compte{
     protected string $nom ;
     protected string $prenom;

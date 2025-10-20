@@ -1,9 +1,10 @@
 <?php
 session_start();
-require_once './src/Classes/Banque/Compte.php';
-require_once './src/Utils/Tools.php';
+//require_once './src/Classes/Banque/Compte.php';
+//require_once './src/Utils/Tools.php';
+include './src/includes/autoload.php';
 
-use App\Compte\Compte;
+use App\Banque\Compte;
 use Utils\Tools;
 
 ?>
