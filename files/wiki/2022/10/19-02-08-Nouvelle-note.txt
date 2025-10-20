@@ -1,0 +1,2 @@
+[title]Nouvelle note[/title]
+Une note qu'elle est bien.

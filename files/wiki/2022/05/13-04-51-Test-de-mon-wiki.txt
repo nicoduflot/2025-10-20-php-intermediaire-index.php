@@ -1,0 +1,4 @@
+[title]Test de mon wiki[/title]
+<p>
+<b>Mon wiki il marche</b>
+</p>

@@ -386,6 +386,8 @@ if( isset($_POST['uploadFile']) && $_POST['uploadFile'] === 'Charger'){
                     </tbody>
 
                 </table>
+            </article>
+            <article class="col-md-6">
                 <h3>Lire un fichier</h3>
                 <p>
                     fread()
@@ -401,8 +403,9 @@ if( isset($_POST['uploadFile']) && $_POST['uploadFile'] === 'Charger'){
                 }
                 ?>
                 </pre>
+            </article>
+            <article class="col-md-6">
                 <h4>Lire un fichier en parcellaire fgets()</h4>
-                
                 <?php
                 if(!$monFichierTexte = fopen('./files/file.txt', 'r')){
                     echo '<p>Echec lors de l\'ouverture du fichier</p>';
@@ -442,6 +445,32 @@ if( isset($_POST['uploadFile']) && $_POST['uploadFile'] === 'Charger'){
                 </form>
             </article>
             <article class="col-md-6">
+                <h3>Liste des fichiers créées et leurs répertoires</h3>
+                <?php
+                function dirMap($directory){
+                    $map = '<ul>';
+                    $folder = opendir($directory);
+                    while( $file = readdir($folder)){
+                        if($file !== '.' && $file !== '..'){
+                            //var_dump($file);
+                            if(filetype($directory.'/'.$file) === 'dir'){
+                                $map .= '<li>'.$file.'</li>';
+                            }else{
+                                $map .= '<li><a href="'.$directory.'/'.$file.'" target="_blank">'.$file.'</a></li>';
+                            }
+                            if(filetype($directory.'/'.$file) === 'dir'){
+                                $map .= dirMap($directory.'/'.$file);
+                            }
+                        }
+                    }
+                    $map .= '</ul>';
+                    return $map;
+                }
+
+                echo dirMap('./files/wiki');
+                ?>
+            </article>
+            <article class="col-md-6">
                 <h3>Téléverser des fichiers</h3>
                 <?php if($messageUpload !== ''){ ?>
                     <div class="alert <?= ($upload)? 'alert-success': 'alert-warning' ?> alert-dismissible fade show" role="alert">
@@ -464,6 +493,12 @@ if( isset($_POST['uploadFile']) && $_POST['uploadFile'] === 'Charger'){
                         </button>
                     </div>
                 </form>
+            </article>
+            <article class="col-md-6">
+                <h3>Liste des fichiers créées et leurs répertoires</h3>
+                <?php
+                echo dirMap('./uploads');
+                ?>
             </article>
         </section>
     </main>

@@ -1,0 +1,2 @@
+[title]Mon titre[/title]
+Voilà du texte

@@ -1,0 +1,15 @@
+[title]Test wiki 02[/title]
+On test les différentes option
+[title]Titre[/title]
+
+[g]en gras[/g]
+
+[i] italique [/i]
+
+[p] Lorem ipsum dolor, sit amet consectetur adipisicing elit. Quod tempore qui hic magnam fugiat, ducimus fugit repudiandae eos, ut nesciunt commodi impedit ea ipsa itaque veritatis beatae a! Facilis, aliquam. [/p]
+
+[liste]
+    [li] élément [/li]
+    [li] élément [/li]
+    [li] élément [/li]
+[/liste]
