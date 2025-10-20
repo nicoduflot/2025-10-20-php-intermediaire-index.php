@@ -54,7 +54,27 @@ if(isset($_POST['createFile']) && $_POST['createFile'] === 'Envoyer'){
 }
 
 /* téléversement de fichiers */
+$messageUpload = '';
+if( isset($_POST['uploadFile']) && $_POST['uploadFile'] === 'Charger'){
+    $uploadDir = './uploads/';
+    /*var_dump(basename($_FILES['fichier']['name']));*/
+    $uploadFile = $uploadDir.basename($_FILES['fichier']['name']);
+    /*echo $uploadFile;*/
+    if(!file_exists($uploadDir)){
+        mkdir($uploadDir, 0777, true);
+    }
+    /* gestion fichiers en doublon */
+    if(file_exists($uploadFile)){
+        $uploadFile = $uploadDir.'copy-'.basename($_FILES['fichier']['name']);
+    }
 
+    if(move_uploaded_file($_FILES['fichier']['tmp_name'], $uploadFile)){
+        $messageUpload = 'Votre fichier '. $_FILES['fichier']['name'] .' a bien été téléversé.';
+        $upload = true;
+    }else{
+        $messageUpload = 'Fichier erroné ou erreur de téléversement';
+    }
+}
 ?>
 <!DOCTYPE html>
 <html lang="fr">
@@ -423,12 +443,12 @@ if(isset($_POST['createFile']) && $_POST['createFile'] === 'Envoyer'){
             </article>
             <article class="col-md-6">
                 <h3>Téléverser des fichiers</h3>
-                <?php  ?>
-                    <div class="alert <?php ?> 'alert-success': 'alert-warning' ?> alert-dismissible fade show" role="alert">
-                        <?php ?>
+                <?php if($messageUpload !== ''){ ?>
+                    <div class="alert <?= ($upload)? 'alert-success': 'alert-warning' ?> alert-dismissible fade show" role="alert">
+                        <?= $messageUpload ?>
                         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                     </div>
-                <?php  ?>
+                <?php } ?>
                 <form enctype="multipart/form-data" method="post" action="./formulaire.php" id="uploadFile">
                     <input type="hidden" name="MAX_FILE_SIZE" value="30000000" />
                     <div class="mb-3">
