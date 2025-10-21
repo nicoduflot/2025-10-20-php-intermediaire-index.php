@@ -1,6 +1,7 @@
 <?php
 
 use App\Banque\CompteCheque;
+use App\Banque\CompteInteret;
 
 include './src/includes/autoload.php';
 ?>
@@ -88,6 +89,12 @@ include './src/includes/autoload.php';
                 ?>
                 <div>
                     <?php
+                    $compteInteret = new CompteInteret('Duflot', 'Nicolas', 'CCP-987654', '0123456', 'NOM RIB', 'MON IBAN FR', 2500, 0.03);
+                    var_dump($compteInteret);
+                    echo $compteInteret->virement(200, $compteChequeDest);
+                    var_dump($compteInteret);
+                    echo $compteInteret->infoCompte();
+                    echo $compteInteret->crediterInterets();
                     ?>
                 </div>
             </article>
