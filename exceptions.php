@@ -1,11 +1,11 @@
 <?php
+include './src/includes/autoload.php';
 
 use App\MonException;
-
-include './src/includes/autoload.php';
 ?>
 <!DOCTYPE html>
 <html lang="fr">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -14,6 +14,7 @@ include './src/includes/autoload.php';
     include './src/Utils/head.php';
     ?>
 </head>
+
 <body data-bs-theme="dark">
     <header>
         <div class="container">
@@ -40,26 +41,27 @@ include './src/includes/autoload.php';
                     echo multiplier(113, 42);<br />
                 </code>
                 <?php
-                function multiplier($x, $y) : float {
-                    if( !is_numeric($x) || !is_numeric($y) ){
+                function multiplier($x, $y): float
+                {
+                    if (!is_numeric($x) || !is_numeric($y)) {
                         throw new Exception('Les deux valeurs doivent être numériques');
                     }
                     return $x * $y;
                 }
 
-                try{
+                try {
                     echo multiplier(20, 12);
                     echo multiplier('toto', 12);
-                }catch(Exception $e){
+                } catch (Exception $e) {
                     echo '
                     <div class="alert alert-danger alert-dismissible fade show" role="alert">
                         Une exceptiona été lancée<br />
-                        Message : '. $e->getMessage() .'<br />
-                        Code : '. $e->getCode() .'<br />
-                        Fichier : '. $e->getFile() .'<br />
-                        Ligne : '. $e->getLine() .'<br />
-                        Trace : '. $e->getTraceAsString() .'<br />
-                        Précédent : '. $e->getPrevious() .'<br />
+                        Message : ' . $e->getMessage() . '<br />
+                        Code : ' . $e->getCode() . '<br />
+                        Fichier : ' . $e->getFile() . '<br />
+                        Ligne : ' . $e->getLine() . '<br />
+                        Trace : ' . $e->getTraceAsString() . '<br />
+                        Précédent : ' . $e->getPrevious() . '<br />
                         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Fermer"></button>
                     </div>
                     ';
@@ -80,43 +82,44 @@ include './src/includes/autoload.php';
                     Par exemple, n'avoir que getMessage() au retour d'une exception.
                 </p>
                 <?php
-                function multiplier2($x, $y) : float {
-                    if( !is_numeric($x) || !is_numeric($y) ){
+                function multiplier2($x, $y): float
+                {
+                    if (!is_numeric($x) || !is_numeric($y)) {
                         throw new Exception('Les deux valeurs doivent être numériques');
                     }
-                    if( func_num_args() > 2 ){
+                    if (func_num_args() > 2) {
                         throw new MonException('La fonction n\'admet que deux arguments');
                     }
                     return $x * $y;
                 }
 
-                try{
+                try {
                     echo multiplier2(20, 12);
                     echo multiplier2(13, 12, 11);
-                }catch(MonException $e){
+                } catch (MonException $e) {
                     var_dump($e);
                     echo '
                     <div class="alert alert-danger alert-dismissible fade show" role="alert">
                         Une exceptiona été lancée<br />
-                        Message : '. $e->getMessage() .'<br />
-                        Code : '. $e->getCode() .'<br />
-                        Fichier : '. $e->getFile() .'<br />
-                        Ligne : '. $e->getLine() .'<br />
-                        Trace : '. $e->getTraceAsString() .'<br />
-                        Précédent : '. $e->getPrevious() .'<br />
+                        Message : ' . $e->getMessage() . '<br />
+                        Code : ' . $e->getCode() . '<br />
+                        Fichier : ' . $e->getFile() . '<br />
+                        Ligne : ' . $e->getLine() . '<br />
+                        Trace : ' . $e->getTraceAsString() . '<br />
+                        Précédent : ' . $e->getPrevious() . '<br />
                         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Fermer"></button>
                     </div>
                     ';
-                }catch(Exception $e){
-                     echo '
+                } catch (Exception $e) {
+                    echo '
                     <div class="alert alert-danger alert-dismissible fade show" role="alert">
                         Une exceptiona été lancée<br />
-                        Message : '. $e->getMessage() .'<br />
-                        Code : '. $e->getCode() .'<br />
-                        Fichier : '. $e->getFile() .'<br />
-                        Ligne : '. $e->getLine() .'<br />
-                        Trace : '. $e->getTraceAsString() .'<br />
-                        Précédent : '. $e->getPrevious() .'<br />
+                        Message : ' . $e->getMessage() . '<br />
+                        Code : ' . $e->getCode() . '<br />
+                        Fichier : ' . $e->getFile() . '<br />
+                        Ligne : ' . $e->getLine() . '<br />
+                        Trace : ' . $e->getTraceAsString() . '<br />
+                        Précédent : ' . $e->getPrevious() . '<br />
                         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Fermer"></button>
                     </div>
                     ';
@@ -128,7 +131,27 @@ include './src/includes/autoload.php';
                 </p>
                 <p>
                     <?php
-                
+                    try{
+                        $bdd = new PDO(
+                            'mysql:host=localhost;dbname=2025-10-20-php-intermediaire;charset=UTF8',
+                            'root',
+                            ''
+                        );
+                        echo '<p>Connexion à la base de données réussie</p>';
+                    }catch (PDOException $e) {
+                        echo '
+                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                            Une exceptiona été lancée<br />
+                            Message : ' . $e->getMessage() . '<br />
+                            Code : ' . $e->getCode() . '<br />
+                            Fichier : ' . $e->getFile() . '<br />
+                            Ligne : ' . $e->getLine() . '<br />
+                            Trace : ' . $e->getTraceAsString() . '<br />
+                            Précédent : ' . $e->getPrevious() . '<br />
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Fermer"></button>
+                        </div>
+                    ';
+                    }
                     ?>
                 </p>
             </article>
@@ -138,4 +161,5 @@ include './src/includes/autoload.php';
     include './src/Widgets/footer.php';
     ?>
 </body>
+
 </html>
