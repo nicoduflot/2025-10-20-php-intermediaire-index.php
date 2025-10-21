@@ -6,16 +6,11 @@ use PDOException;
 
 /* Tools est une classe statique : Pas de constructeur donc pas d'instance de classe a créer */
 
-class Tools{
-    static $pi = 3.1415926535898;
-
-    public const DBHOST = 'localhost';
-    public const DBNAME = '2025-10-20-php-intermediaire';
-    public const DBUSER = 'root';
-    public const DBPSW = '';
+class Tools implements Config_interface{
+    
 
     public static function circo($rayon) : float {
-        return (2 * $rayon) * self::$pi;
+        return (2 * $rayon) * self::PI;
     }
 
     public static function makeSlug($text) : string{

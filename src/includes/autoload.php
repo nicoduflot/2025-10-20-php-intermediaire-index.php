@@ -1,12 +1,18 @@
 <?php
 /* pour réaliser un autoload, il faut créer un mapping des classes et de leur namespace */
-
+/*
+On a déplacé le mapping de l'autoload dans l'interface Config_interface
 const ALIASES = [
     'App'=>'Classes',
     'App\\Banque'=>'Classes\\Banque',
     'Utils' => 'Utils',
-    'JDR' => 'Classes\\Aventure'
+    'JDR' => 'Classes\\Aventure',
+    'App\\Utrain' => 'CLasses\\Utrain'
 ];
+*/
+
+require_once './src/Utils/Config_interface.php';
+use Utils\Config_interface;
 
 spl_autoload_register(function($use){
 
@@ -22,8 +28,8 @@ spl_autoload_register(function($use){
     
     $classname = $namespaceparts[count($namespaceparts)-1];
     $pathalias = '';
-    if(array_key_exists($namespace, ALIASES)){
-        $pathalias = ALIASES[$namespace];
+    if(array_key_exists($namespace, Config_interface::AUTOLOAD_ALIASES)){
+        $pathalias = Config_interface::AUTOLOAD_ALIASES[$namespace];
     }
 
     $paths = [

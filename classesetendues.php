@@ -2,6 +2,9 @@
 
 use App\Banque\CompteCheque;
 use App\Banque\CompteInteret;
+use App\Utrain\FreePublicUser;
+use App\Utrain\InternUser;
+use App\Utrain\PublicUser;
 use JDR\Guerrier;
 use JDR\Voleur;
 
@@ -459,7 +462,7 @@ interface Utrain_Interface{
                 </code>
                 <p>
                     Dans les personnes qui prennent des abonnements, il y a des personne qui travaillent à U-train. Certains seront Cadre et paieront moins chers que les non cadres.
-                    Les personnes du public, si elles font parties de la police elle paieront moins chers que le public.
+                    Les personnes du public, si elles font parties des pompiers elles paieront moins chers que le public.
                 </p>
             </article>
             <article class="col-lg-6">
@@ -511,7 +514,14 @@ class PublicUser implements Utrain_Interface, Toto_Interface{
                     </pre>
                 </code>
                 <?php
-
+                $publicUser = new PublicUser('Durand');
+                var_dump($publicUser);
+                $publicUser->youpi();
+                $pompier = new PublicUser('Durand', 'Pompier');
+                var_dump($pompier);
+                $ado = new FreePublicUser('Kevin', 14);
+                var_dump($ado);
+                $ado->youpi();
                 ?>
             </article>
             <article class="col-lg-6">
@@ -558,7 +568,10 @@ class InternUser implements Utrain_Interface{
                     </pre>
                 </code>
                 <?php
-
+                $internUser = new InternUser('Charlot');
+                var_dump($internUser);
+                $cadreUser = new InternUser('Michaël Scott', 'Cadre');
+                var_dump($cadreUser);
                 ?>
             </article>
         </section>
