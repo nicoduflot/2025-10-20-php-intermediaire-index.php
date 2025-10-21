@@ -1,5 +1,8 @@
 <?php
 
+use App\MonException;
+
+include './src/includes/autoload.php';
 ?>
 <!DOCTYPE html>
 <html lang="fr">
@@ -37,7 +40,30 @@
                     echo multiplier(113, 42);<br />
                 </code>
                 <?php
-                
+                function multiplier($x, $y) : float {
+                    if( !is_numeric($x) || !is_numeric($y) ){
+                        throw new Exception('Les deux valeurs doivent être numériques');
+                    }
+                    return $x * $y;
+                }
+
+                try{
+                    echo multiplier(20, 12);
+                    echo multiplier('toto', 12);
+                }catch(Exception $e){
+                    echo '
+                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                        Une exceptiona été lancée<br />
+                        Message : '. $e->getMessage() .'<br />
+                        Code : '. $e->getCode() .'<br />
+                        Fichier : '. $e->getFile() .'<br />
+                        Ligne : '. $e->getLine() .'<br />
+                        Trace : '. $e->getTraceAsString() .'<br />
+                        Précédent : '. $e->getPrevious() .'<br />
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Fermer"></button>
+                    </div>
+                    ';
+                }
                 ?>
                 <p>
                     Si on n'utilise pas de try-catch sur des expression lançant des Exceptions,
@@ -54,7 +80,47 @@
                     Par exemple, n'avoir que getMessage() au retour d'une exception.
                 </p>
                 <?php
-                
+                function multiplier2($x, $y) : float {
+                    if( !is_numeric($x) || !is_numeric($y) ){
+                        throw new Exception('Les deux valeurs doivent être numériques');
+                    }
+                    if( func_num_args() > 2 ){
+                        throw new MonException('La fonction n\'admet que deux arguments');
+                    }
+                    return $x * $y;
+                }
+
+                try{
+                    echo multiplier2(20, 12);
+                    echo multiplier2(13, 12, 11);
+                }catch(MonException $e){
+                    var_dump($e);
+                    echo '
+                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                        Une exceptiona été lancée<br />
+                        Message : '. $e->getMessage() .'<br />
+                        Code : '. $e->getCode() .'<br />
+                        Fichier : '. $e->getFile() .'<br />
+                        Ligne : '. $e->getLine() .'<br />
+                        Trace : '. $e->getTraceAsString() .'<br />
+                        Précédent : '. $e->getPrevious() .'<br />
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Fermer"></button>
+                    </div>
+                    ';
+                }catch(Exception $e){
+                     echo '
+                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                        Une exceptiona été lancée<br />
+                        Message : '. $e->getMessage() .'<br />
+                        Code : '. $e->getCode() .'<br />
+                        Fichier : '. $e->getFile() .'<br />
+                        Ligne : '. $e->getLine() .'<br />
+                        Trace : '. $e->getTraceAsString() .'<br />
+                        Précédent : '. $e->getPrevious() .'<br />
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Fermer"></button>
+                    </div>
+                    ';
+                }
                 ?>
                 <h4>Exception dans PDO</h4>
                 <p>
