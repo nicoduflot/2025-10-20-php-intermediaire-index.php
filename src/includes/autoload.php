@@ -5,6 +5,7 @@ const ALIASES = [
     'App'=>'Classes',
     'App\\Banque'=>'Classes\\Banque',
     'Utils' => 'Utils',
+    'JDR' => 'Classes\\Aventure'
 ];
 
 spl_autoload_register(function($use){

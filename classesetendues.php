@@ -2,6 +2,8 @@
 
 use App\Banque\CompteCheque;
 use App\Banque\CompteInteret;
+use JDR\Guerrier;
+use JDR\Voleur;
 
 include './src/includes/autoload.php';
 ?>
@@ -368,6 +370,10 @@ class Voleur extends Perso{
 }
                     </pre>
                 </code>
+                <?php
+                $voleur = new Voleur('Arsène');
+                var_dump($voleur);
+                ?>
                         <h3>La classe Guerrier</h3>
                 <code>
                     <pre>
@@ -387,10 +393,20 @@ class Guerrier extends Perso{
 }
                     </pre>
                 </code>
+                <?php
+                $guerrier = new Guerrier('Conan');
+                var_dump($guerrier);
+                ?>
                     </div>
                 </div>
+            </article>
+            <article>
+                <h3>Voleur vs Guerrier</h3>
                 <?php
-
+                echo $voleur->taper($guerrier);
+                echo $guerrier->taper($voleur);
+                echo $voleur->multi($guerrier);
+                echo $guerrier->multi($voleur);
                 ?>
             </article>
         </section>
