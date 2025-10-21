@@ -8,7 +8,7 @@ namespace App\Banque;
     protected string $numagence;
     protected string $rib;
     protected string $iban;
-    protected float $solde;
+    protected float  $solde;
     protected float  $decouvert;
     protected string $devise;
 
@@ -239,6 +239,12 @@ namespace App\Banque;
                     Virement impossible vers le compte '. $destinataire->getNumcompte() .'</p>';
             return false;
         }
+        /* il faut vérifier si l'autorisation de découver n'est pas dépassée */
+        if( $this->getSolde() - $montant < ( -$this->getDecouvert()) ){
+             echo '<p>Le paiement dépasse votre autorisation de découvert initialement de '.$this->getDecouvert().$this->getDevise().'<br /> 
+                    Virement impossible vers le compte '. $destinataire->getNumcompte() .'</p>';
+            return false;
+        }
         $this->modifierSolde(-$montant);
         $destinataire->modifierSolde($montant);
         echo '<p>Le compte '. $destinataire->getNumcompte() .
@@ -263,14 +269,12 @@ namespace App\Banque;
         $ficheCompte = '';
         $etatSolde = ($this->getSolde() < 0 )? 'débiteur' : 'créditeur' ;
         $ficheCompte = '
-        <div class="card">
             <div class="my-2"><b>'. $this->typeCompte() .'</b></div>
             <div class="my-2"><b>'. $this->getNom() .' ' . $this->getPrenom() . '</b></div>
             <div class="my-2"><b>' . $this->getNumagence() . '</b></div>
             <div class="my-2"><b>'. $this->getRib() .'</b></div>
             <div class="my-2"><b>'. $this->getIban() .'</b></div>
             <div class="my-2">Compte '. $etatSolde .' <b> '. $this->getSolde() .' '. $this->getDevise() .'</b></div>
-        </div>
         ';
         return $ficheCompte;
     }

@@ -1,5 +1,8 @@
 <?php
 
+use App\Banque\CompteCheque;
+
+include './src/includes/autoload.php';
 ?>
 <!DOCTYPE html>
 <html lang="fr">
@@ -69,6 +72,12 @@
                     <h2>Compte Chèque</h2>
                 </header>
                 <?php
+                $compteCheque = new CompteCheque('Duflot', 'Nicolas', 'CCP-987654', '0123456', 'NOM RIB', 'MON IBAN FR', '7872 8349 4456 3163', '0152', 2500);
+                var_dump($compteCheque);
+                $compteChequeDest = new CompteCheque('Dupond', 'Jacques', 'CCP-456987', '1235694', 'NOM RIB', 'MON IBAN FR', '7683 5226 0722 1061', '2905', 2000);
+                var_dump($compteChequeDest);
+                echo $compteCheque->payerParCarte('7872 8349 4456 3163', '0152', 350, $compteChequeDest);
+                echo $compteCheque->infoCompte();
                 ?>
             </article>
             <article class="col-lg-6">

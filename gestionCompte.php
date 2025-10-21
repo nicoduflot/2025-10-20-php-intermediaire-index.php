@@ -31,17 +31,17 @@
                 <?php
                 /* on arrive d'un formulaire de modification ou de suppression */
                     /* modification */
-
+                    
                     ?>
                     <script>
-                        document.location.href = './classesetpdo.php';
+                        //document.location.href = './classesetpdo.php';
                     </script>
                     <?php
                     /* suppression */
 
                     ?>
                     <script>
-                        document.location.href = './classesetpdo.php';
+                        //document.location.href = './classesetpdo.php';
                     </script>
                     <?php
                 
@@ -225,7 +225,7 @@
                                             <label for="solde">Solde</label>
                                         </div>
                                         <div class="col-lg-6">
-                                            <input type="number" class="form-control" name="solde" id="solde" value="<?= $compte->getSolde() ?>" />
+                                            <input type="number" class="form-control" name="solde" id="solde" value="<?php  ?>" />
                                         </div>
                                     </div>
                                 </fieldset>
