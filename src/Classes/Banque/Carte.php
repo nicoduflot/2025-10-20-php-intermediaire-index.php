@@ -33,13 +33,6 @@ class Carte{
         return $this->codepin;
     }
 
-    /* Méthode d'enregistrement de la carte en bdd */
-    public function insertCard() : int {
-        $sql ='INSERT INTO `carte` (`cardnumber`, `codepin`) VALUE ( :cardnumber, :codepin );';
-        $params = ['cardnumber' => $this->numcarte, 'codepin' => $this->codepin ];
-        return Tools::insertBDD($sql, $params);
-    }
-
     /**
      * Set the value of numcarte
      *
@@ -62,5 +55,28 @@ class Carte{
         $this->codepin = $codepin;
 
         return $this;
+    }
+
+    /* Méthode d'enregistrement de la carte en bdd */
+    public function insertCard() : int {
+        $sql ='INSERT INTO `carte` (`cardnumber`, `codepin`) VALUE ( :cardnumber, :codepin );';
+        $params = ['cardnumber' => $this->numcarte, 'codepin' => $this->codepin ];
+        return Tools::insertBDD($sql, $params);
+    }
+
+    public function suppCarte() : bool{
+        $sql = '
+            DELETE FROM `carte` 
+            WHERE 
+                `cardnumber` = :cardnumber 
+            AND 
+                `codepin` = :codepin;
+        ';
+        $params = [
+            'cardnumber' => $this->numcarte,
+            'codepin' => $this->codepin
+        ];
+        Tools::queryBDD($sql, $params);
+        return true;
     }
 }

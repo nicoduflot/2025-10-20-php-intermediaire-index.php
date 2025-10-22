@@ -185,4 +185,10 @@ class CompteCheque extends Compte{
 
         return $this;
     }
+
+    public function suppCompte() : bool{
+        parent::suppCompte();
+        $this->getCarte()->suppCarte();
+        return true;
+    }
 }

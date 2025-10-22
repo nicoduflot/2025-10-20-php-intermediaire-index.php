@@ -383,4 +383,14 @@ use Utils\Tools;
         Tools::queryBDD($sql, $params);
         return true;
     }
+
+    public function suppCompte() : bool{
+        $sql = '
+        DELETE FROM `compte` 
+        WHERE `id` = :id;
+        ';
+        $params = ['id' => $this->id];
+        Tools::queryBDD($sql, $params);
+        return true;
+    }
  }

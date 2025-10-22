@@ -75,9 +75,10 @@ use Utils\Tools;
                     $compte = unserialize($_SESSION['compte']);
                     //var_dump($compte);
                     $_GET['id'] = $compte->getId();
+                    $compte->suppCompte();
                     ?>
                     <script>
-                        //document.location.href = './classesetpdo.php';
+                        document.location.href = './classesetpdo.php';
                     </script>
                     <?php
                 }
