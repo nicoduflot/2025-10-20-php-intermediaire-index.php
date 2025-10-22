@@ -1,4 +1,7 @@
 <?php
+
+use Utils\Tools;
+
 session_start();
 include './src/includes/autoload.php';
 
@@ -32,6 +35,7 @@ include './src/includes/autoload.php';
                 </header>
                 <?php
                 /* on arrive d'un formulaire de modification ou de suppression */
+                if(isset($_POST['action']) && $_POST['action'] === 'edit'){
                     /* modification */
                     
                     ?>
@@ -39,6 +43,8 @@ include './src/includes/autoload.php';
                         //document.location.href = './classesetpdo.php';
                     </script>
                     <?php
+                }
+                if(isset($_POST['action']) && $_POST['action'] === 'edit'){
                     /* suppression */
 
                     ?>
@@ -46,11 +52,28 @@ include './src/includes/autoload.php';
                         //document.location.href = './classesetpdo.php';
                     </script>
                     <?php
-                
+                }
                 /* on viens du bouton "afficher compte" */
                 /*
                 GET avec action = show id = id du compte
                 */
+                if( isset($_GET['action']) && isset($_GET['id']) && $_GET['id'] !== '' ){
+                    switch($_GET['action']){
+                        case 'show':
+                            $idCompte = $_GET['id'];
+                            $sql = '
+                            SELECT 
+                                `compte`.*, `carte`.`cardnumber`, `carte`.`codepin`
+                            FROM 
+                                `compte` LEFT JOIN
+                                `carte` ON `compte`.`cardid` = `carte`.`id`
+                            WHERE 
+                                `compte`.`id` = :id;
+                            ';
+                            $params = ['id' => $idCompte];
+                            $request = Tools::queryBDD($sql, $params);
+                            $data = $request->fetch(PDO::FETCH_ASSOC);
+                            var_dump($data);
                             ?>
                             <table class="table">
                                 <thead>
@@ -105,8 +128,9 @@ include './src/includes/autoload.php';
                                 </tbody>
                             </table>
                         <?php
-                        
+                        break;
                         /* Modification du compte */
+                        case 'edit':
                         ?>
                             <form method="post" action="./gestionCompte.php">
                                 <input type="hidden" name="id" id="id" value="<?= $_GET['id'] ?>" />
@@ -242,7 +266,9 @@ include './src/includes/autoload.php';
                                 </p>
                             </form>
                         <?php
+                        break;
                         /* suppression d'un compte */
+                        case 'supp':
                         ?>
                             <form method="post" action="./gestionCompte.php">
                                 <input type="hidden" name="id" id="id" value="<?= $_GET['id'] ?>" />
@@ -255,7 +281,10 @@ include './src/includes/autoload.php';
                                 </p>
                             </form>
                         <?php
-
+                        break;
+                        default:
+                    }
+                }
                 ?>
                 <p>
                     <a href="./classesetpdo.php" title="Retour à la liste des compte"><button class="btn btn-secondary btn-small"><i class="bi bi-list"></i></button></a>
