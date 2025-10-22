@@ -26,12 +26,12 @@ abstract class Utilisateur{
 
     abstract public function getPermissions();
 
-    /* Méthodes prorpres à Utilisateur */
+    /* Méthodes propres à tous les utilisateurs */
     public function read(){
         return 'Lecture des données<br />';
     }
     
     public function profile(){
-        return 'Modification des données du profil';
+        return 'Modification des données du profil<br />';
     }
 }

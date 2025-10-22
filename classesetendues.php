@@ -2,6 +2,11 @@
 
 use App\Banque\CompteCheque;
 use App\Banque\CompteInteret;
+use App\CorpoInc\Administrateur;
+use App\CorpoInc\Editeur;
+use App\CorpoInc\UtilisateurFactory;
+use App\CorpoInc\UtilisateurStandard;
+use App\Parser\Parser_Factory;
 use App\Utrain\FreePublicUser;
 use App\Utrain\InternUser;
 use App\Utrain\PublicUser;
@@ -314,8 +319,8 @@ $frere->contenuCoffre();
                 <div class="row">
                     <div class="col-md-4">
                         <h3>La classe Perso</h3>
-                <code>
-                    <pre>
+                        <code>
+                            <pre>
 &lt?php
 namespace JDR;
 abstract class Perso{
@@ -351,12 +356,12 @@ abstract class Perso{
     abstract protected function multi(Perso $cible);
 }
                     </pre>
-                </code>
+                        </code>
                     </div>
                     <div class="col-md-8">
                         <h3>La classe Voleur</h3>
-                <code>
-                    <pre>
+                        <code>
+                            <pre>
 &lt;?php
 namespace JDR;
 use JDR\Perso;
@@ -372,14 +377,14 @@ class Voleur extends Perso{
     }
 }
                     </pre>
-                </code>
-                <?php
-                $voleur = new Voleur('Arsène');
-                var_dump($voleur);
-                ?>
+                        </code>
+                        <?php
+                        $voleur = new Voleur('Arsène');
+                        var_dump($voleur);
+                        ?>
                         <h3>La classe Guerrier</h3>
-                <code>
-                    <pre>
+                        <code>
+                            <pre>
 &lt;?php
 namespace JDR;
 use JDR\Perso;
@@ -395,11 +400,11 @@ class Guerrier extends Perso{
     }
 }
                     </pre>
-                </code>
-                <?php
-                $guerrier = new Guerrier('Conan');
-                var_dump($guerrier);
-                ?>
+                        </code>
+                        <?php
+                        $guerrier = new Guerrier('Conan');
+                        var_dump($guerrier);
+                        ?>
                     </div>
                 </div>
             </article>
@@ -603,9 +608,72 @@ class InternUser implements Utrain_Interface{
                 </p>
                 <pre>
                 <?php
+                $userStandard = new UtilisateurStandard('Doudou', 'bisounours');
+                var_dump($userStandard);
+                var_dump($userStandard->getPermissions());
+                echo 'Login : ' . $userStandard->getLogin() . '<br/>';
+                echo 'Motdepasse ok : ' . $userStandard->verifierMotDePasse('Bisounours') . '<br/>';
+                echo 'Motdepasse ok : ' . $userStandard->verifierMotDePasse('bisounours') . '<br/>';
+                echo $userStandard->read();
+                echo $userStandard->profile();
 
+                $editeur = new Editeur('Doudou', 'bisounours');
+                var_dump($editeur);
+                var_dump($editeur->getPermissions());
+                echo 'Login : ' . $editeur->getLogin() . '<br/>';
+                echo 'Motdepasse ok : ' . $editeur->verifierMotDePasse('Bisounours') . '<br/>';
+                echo 'Motdepasse ok : ' . $editeur->verifierMotDePasse('bisounours') . '<br/>';
+                echo $editeur->read();
+                echo $editeur->profile();
+                echo $editeur->write();
+                echo $editeur->update();
+                echo $editeur->publish();
+
+                $admin = new Administrateur('Doudou', 'bisounours');
+                var_dump($admin);
+                var_dump($admin->getPermissions());
+                echo 'Login : ' . $admin->getLogin() . '<br/>';
+                echo 'Motdepasse ok : ' . $admin->verifierMotDePasse('Bisounours') . '<br/>';
+                echo 'Motdepasse ok : ' . $admin->verifierMotDePasse('bisounours') . '<br/>';
+                echo $admin->read();
+                echo $admin->profile();
+                echo $admin->write();
+                echo $admin->update();
+                echo $admin->publish();
+                echo $admin->gestionUtilisateur();
+                echo $admin->adminSite();
+
+                $doudouUser = UtilisateurFactory::creer('standard', 'Doudou', 'groscalin');
+                var_dump($doudouUser);
+
+                $doudouEditeur = UtilisateurFactory::creer('editeur', 'Doudou', 'groscalin');
+                var_dump($doudouEditeur);
+
+                $doudouAdmin = UtilisateurFactory::creer('admin', 'Doudou', 'groscalin');
+                var_dump($doudouAdmin);
+
+                var_dump($doudouAdmin->getPermissions());
+                echo 'Login : ' . $doudouAdmin->getLogin() . '<br/>';
+                echo 'Motdepasse ok : ' . $doudouAdmin->verifierMotDePasse('Bisounours') . '<br/>';
+                echo 'Motdepasse ok : ' . $admin->verifierMotDePasse('bisounours') . '<br/>';
+                echo $doudouAdmin->read();
+                echo $doudouAdmin->profile();
+                echo $doudouAdmin->write();
+                echo $doudouAdmin->update();
+                echo $doudouAdmin->publish();
+                echo $doudouAdmin->gestionUtilisateur();
+                echo $doudouAdmin->adminSite();
                 ?>
                 </pre>
+                <h3>Autre exemple de Factory</h3>
+                <?php
+                $file = "./files/batch/users.json";
+                $objectJson = Parser_Factory::getParser($file);
+                var_dump($objectJson);
+                $file = "./files/batch/06-repertoire.xml";
+                $objectXml = Parser_Factory::getParser($file);
+                var_dump($objectXml);
+                ?>
             </article>
         </section>
     </main>

@@ -8,7 +8,7 @@ class Administrateur extends Editeur{
         return ['lecture', 'modification_profil', 'ecriture', 'modification_contenu', 'publication', 'gestion_utilisateur', 'administration'];
     }
 
-    /* Méthode propre à l'éditeur */
+    /* Méthode propre à l'administrateur */
     public function gestionUtilisateur(){
         return 'Droits de gestion des utilisateurs<br />';
     }
