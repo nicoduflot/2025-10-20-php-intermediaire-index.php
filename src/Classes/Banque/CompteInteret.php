@@ -1,6 +1,8 @@
 <?php
 namespace App\Banque;
 
+use Utils\Tools;
+
 class CompteInteret extends Compte{
     /* Attribut(s) propres à CompteCheque */
     private $taux;
@@ -86,6 +88,39 @@ class CompteInteret extends Compte{
     }
 
     /* methode(s) d'enregistrement dans la bdd */
-
+    /* methode(s) d'enregistrement dans la bdd */
+    public function insertCompte(){
+        $params = $this->getParams();
+        $params['taux'] = $this->taux;
+        $sql = '
+            INSERT INTO `compte` ( 
+            `typecompte`,
+            `nom`,
+            `prenom`,
+            `numcompte`,
+            `numagence`,
+            `rib`,
+            `iban`,
+            `solde`,
+            `devise`,
+            `decouvert`,
+            `taux`
+            ) VALUES (
+            :typecompte,
+            :nom,
+            :prenom,
+            :numcompte,
+            :numagence,
+            :rib,
+            :iban,
+            :solde,
+            :devise,
+            :decouvert,
+            :taux
+            )
+        ';
+        $this->id = Tools::insertBDD($sql, $params);
+        return true;
+    }
     
 }

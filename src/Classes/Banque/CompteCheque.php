@@ -2,6 +2,7 @@
 namespace App\Banque;
 
 use App\Banque\Carte;
+use Utils\Tools;
 
 class CompteCheque extends Compte{
     /* Attribut(s) propres à CompteCheque */
@@ -99,4 +100,38 @@ class CompteCheque extends Compte{
     }
 
     /* methode(s) d'enregistrement dans la bdd */
+    public function insertCompte(){
+        $cardId = $this->getCarte()->insertCard();
+        $params = $this->getParams();
+        $params['cardid'] = $cardId;
+        $sql = '
+            INSERT INTO `compte` ( 
+            `typecompte`,
+            `nom`,
+            `prenom`,
+            `numcompte`,
+            `numagence`,
+            `rib`,
+            `iban`,
+            `solde`,
+            `devise`,
+            `decouvert`,
+            `cardid`
+            ) VALUES (
+            :typecompte,
+            :nom,
+            :prenom,
+            :numcompte,
+            :numagence,
+            :rib,
+            :iban,
+            :solde,
+            :devise,
+            :decouvert,
+            :cardid
+            )
+        ';
+        $this->id = Tools::insertBDD($sql, $params);
+        return true;
+    }
 }

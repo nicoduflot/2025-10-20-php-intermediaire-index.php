@@ -1,6 +1,9 @@
 <?php 
 
 namespace App\Banque;
+
+use Utils\Tools;
+
  class Compte{
     protected string $nom ;
     protected string $prenom;
@@ -11,6 +14,7 @@ namespace App\Banque;
     protected float  $solde;
     protected float  $decouvert;
     protected string $devise;
+    protected $id;
 
     /**
      * @param string $nom - nom du détenteur
@@ -44,6 +48,7 @@ namespace App\Banque;
         $this->solde = $solde ;
         $this->decouvert = $decouvert ;
         $this->devise = $devise ;
+        $this->id = null;
     }
 
     /**
@@ -282,5 +287,55 @@ namespace App\Banque;
     /* exemple de méthode statique */
     public static function welcomeUser() : string {
         return '<h2>Bienvenue Chez CorpoInc !</h2>';
+    }
+
+    /* Insertion compte base de données */
+
+    /* Crée des paramètre de requête communs à tous les type de compte */
+    public function getParams(){
+        $params = [
+            'typecompte' => $this->typeCompte(),
+            'nom' => $this->nom,
+            'prenom' => $this->prenom,
+            'numcompte' => $this->numcompte,
+            'numagence' => $this->numagence,
+            'rib' => $this->rib,
+            'iban' => $this->iban,
+            'solde' => $this->solde,
+            'devise' => $this->devise,
+            'decouvert' => $this->decouvert
+        ];
+        return $params;
+    }
+
+    public function insertCompte(){
+        $params = $this->getParams();
+        $sql = '
+            INSERT INTO `compte` ( 
+            `typecompte`,
+            `nom`,
+            `prenom`,
+            `numcompte`,
+            `numagence`,
+            `rib`,
+            `iban`,
+            `solde`,
+            `devise`,
+            `decouvert`
+            ) VALUES (
+            :typecompte,
+            :nom,
+            :prenom,
+            :numcompte,
+            :numagence,
+            :rib,
+            :iban,
+            :solde,
+            :devise,
+            :decouvert
+            )
+        ';
+        $this->id = Tools::insertBDD($sql, $params);
+        return true;
     }
  }

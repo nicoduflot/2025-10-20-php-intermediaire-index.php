@@ -44,7 +44,6 @@ CREATE TABLE IF NOT EXISTS `carte` (
 DROP TABLE IF EXISTS `compte`;
 CREATE TABLE IF NOT EXISTS `compte` (
   `id` int NOT NULL AUTO_INCREMENT,
-  `uniqueid` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `typecompte` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `nom` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `prenom` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -58,7 +57,6 @@ CREATE TABLE IF NOT EXISTS `compte` (
   `taux` float DEFAULT NULL,
   `decouvert` float DEFAULT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `uniqueid` (`uniqueid`),
   KEY `cardid` (`cardid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 

@@ -1,5 +1,11 @@
 <?php
 
+use App\Banque\Compte;
+use App\Banque\CompteCheque;
+use App\Banque\CompteInteret;
+
+session_start();
+include './src/includes/autoload.php';
 ?>
 <!DOCTYPE html>
 <html lang="fr">
@@ -27,22 +33,47 @@
                     <h2>Création d'un compte</h2>
                 </header>
                 <?php
-                /* on a bien un type de compte */
-                
+                /* on a bien un type de compte créé par le formulaire */
+                if( isset($_POST['type']) ){
                     /* selon le type de compte */
-                                    
+                    $typeCompte = $_POST['type'];
+                    $nom = $_POST['nom'];
+                    $prenom = $_POST['prenom'];
+                    $date = new DateTimeImmutable();
+                    $numcompte = $date->format('Y-m-d') . ' - ' . time();
+                    $numagence = $_POST['numagence'];
+                    $rib = 'RIB - '. $numagence . ' - ' . $numcompte ;
+                    $iban = 'IBAN - '. $numagence . ' - ' . $numcompte . ' FR' ;
+                    $solde = $_POST['solde'];
+                    $decouvert = (isset($_POST['decouvert']))? $_POST['decouvert'] : 0 ;
+                    $devise = '€';
+                    switch($typeCompte){
+                        case 'Compte':
+                            echo $typeCompte;
+                            $compte = new Compte($nom, $prenom, $numcompte, $numagence, $rib, $iban, $solde, $decouvert, $devise);
+                        break;
+                        case 'CompteCheque':
+                            $compte = new CompteCheque($nom, $prenom, $numcompte, $numagence, $rib, $iban, $_POST['numcarte'], $_POST['codepin'], $solde, $decouvert, $devise);
+                        break;
+                        case 'CompteInteret':
+                            $taux = floatval($_POST['taux']);
+                            $compte = new CompteInteret($nom, $prenom, $numcompte, $numagence, $rib, $iban,  $solde, $taux, $decouvert, $devise);
+                        break;
+                    }
+                    $compte->insertCompte();
                     ?>
                     <h3>Le compte suivant a été enregistré : </h3>
                         <?php
-                        
+                        echo $compte->infoCompte();
                         ?>
                     <p>
                         <a href="./classesetpdo.php"><button class="btn btn-outline-secondary btn-small" type="button">Retour à la page des comptes</button></a>
                     </p>
                     <?php
                 /* sinon */
+                }else{
                     /* on récupère le type de compte ou c'est null */
-                    
+                    $typeCompte = (isset($_GET['typecompte']))? $_GET['typecompte']: null;
                     ?>
                     <form method="post">
                         <fieldset class="form-control my-2">
@@ -80,13 +111,15 @@
                                     <label for="type">Type compte</label>
                                 </div>
                                 <div class="col-lg-6">
-                                    <input type="hidden" name="type" id="type" value="<?php  ?>" readonly />
-                                    <?php ?>
+                                    <input type="hidden" name="type" id="type" value="<?= $typeCompte ?>" readonly />
+                                    <?= $typeCompte ?>
                                 </div>
                             </div>
                             <?php
                             /* selon le type de compte */
+                            switch($typeCompte){
                                     /* un compte */
+                                    case 'Compte':
                                     ?>
                                     <div class="row my-2">
                                         <div class="col-lg-6">
@@ -97,7 +130,9 @@
                                         </div>
                                     </div>
                                     <?php
+                                    break;
                                     /* un compte chèque */
+                                    case 'CompteCheque':
                                     ?>
                                     <div class="row my-2">
                                         <div class="col-lg-6">
@@ -112,7 +147,7 @@
                                             <label for="numcarte">Numéro de carte</label>
                                         </div>
                                         <div class="col-lg-6">
-                                            <input type="text" readonly class="form-control" name="numcarte" id="numcarte" value="<?php ?>" />
+                                            <input type="text" readonly class="form-control" name="numcarte" id="numcarte" value="<?= CompteCheque::generateCardNumber() ?>" />
                                         </div>
                                     </div>
                                     <div class="row my-2">
@@ -120,11 +155,13 @@
                                             <label for="codepin">Code secret</label>
                                         </div>
                                         <div class="col-lg-6">
-                                            <input type="text" readonly class="form-control" name="codepin" id="codepin" value="<?php ?>" />
+                                            <input type="text" readonly class="form-control" name="codepin" id="codepin" value="<?= CompteCheque::generatePin() ?>" />
                                         </div>
                                     </div>
                                 <?php
+                                break;
                                 /* un compte intéret */
+                                case 'CompteInteret':
                                     ?>
                                     <div class="row my-2">
                                         <div class="col-lg-6">
@@ -140,13 +177,15 @@
                                         </div>
                                     </div>
                                     <?php
+                                break;
                                 /* le type de compte n'existe pas */
+                                default:
                                     ?>
                                     <script>
-                                        //document.location.href = './classesetpdo.php';
+                                        document.location.href = './classesetpdo.php';
                                     </script>
                                     <?php
-                            
+                            }
                             ?>
                             <div class="row my-2">
                                 <div class="col-lg-6">
@@ -168,7 +207,7 @@
                         </p>
                     </form>
                 <?php
-                
+                }
                 ?>
             </article>
 

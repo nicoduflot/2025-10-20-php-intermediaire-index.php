@@ -1,6 +1,8 @@
 <?php
 namespace App\Banque;
 
+use Utils\Tools;
+
 class Carte{
     private $numcarte;
     private $codepin;
@@ -32,5 +34,9 @@ class Carte{
     }
 
     /* Méthode d'enregistrement de la carte en bdd */
-
+    public function insertCard() : int {
+        $sql ='INSERT INTO `carte` (`cardnumber`, `codepin`) VALUE ( :cardnumber, :codepin );';
+        $params = ['cardnumber' => $this->numcarte, 'codepin' => $this->codepin ];
+        return Tools::insertBDD($sql, $params);
+    }
 }

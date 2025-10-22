@@ -1,6 +1,7 @@
 <?php
-
-
+session_start();
+include './src/includes/autoload.php';
+use Utils\Tools;
 ?>
 <!DOCTYPE html>
 <html lang="fr">
