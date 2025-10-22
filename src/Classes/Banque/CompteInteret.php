@@ -45,6 +45,7 @@ class CompteInteret extends Compte{
         );
         $this->taux = $taux;
         $this->decouvert = 0;
+        $this->params = parent::getParams();
     }
 
     /**
@@ -87,11 +88,17 @@ class CompteInteret extends Compte{
         return $ficheCompte;
     }
 
+    public function getParams()
+    {
+        $this->params = parent::getParams();
+        $this->params['taux'] = $this->taux;
+        return $this->params;
+    }
+
     /* methode(s) d'enregistrement dans la bdd */
     /* methode(s) d'enregistrement dans la bdd */
     public function insertCompte(){
-        $params = $this->getParams();
-        $params['taux'] = $this->taux;
+        
         $sql = '
             INSERT INTO `compte` ( 
             `typecompte`,
@@ -119,7 +126,32 @@ class CompteInteret extends Compte{
             :taux
             )
         ';
-        $this->id = Tools::insertBDD($sql, $params);
+        $this->id = Tools::insertBDD($sql, $this->getParams());
+        return true;
+    }
+
+    public function updateCompte() : bool {
+        $params = $this->getParams();
+        $params['id'] = $this->getId();
+        //var_dump($params);
+        $sql = '
+            UPDATE `Compte` 
+            SET 
+                `typecompte` = :typecompte,
+                `nom` = :nom ,
+                `prenom` = :prenom ,
+                `numcompte` = :numcompte ,
+                `numagence` = :numagence ,
+                `rib` = :rib ,
+                `iban` = :iban ,
+                `solde` = :solde ,
+                `devise` = :devise ,
+                `decouvert` = :decouvert, 
+                `taux` = :taux
+            WHERE 
+                `id` = :id
+        ';
+        Tools::queryBDD($sql, $params);
         return true;
     }
     

@@ -7,6 +7,7 @@ use Utils\Tools;
 class CompteCheque extends Compte{
     /* Attribut(s) propres à CompteCheque */
     private $carte;
+    private $cardid;
     /**
      * @param string $nom - nom du détenteur
      * @param string $prenom - prénom du détenteur
@@ -99,11 +100,17 @@ class CompteCheque extends Compte{
         return $ficheCompte;
     }
 
+    public function getParams()
+    {
+        $this->params = parent::getParams();
+        $this->params['cardid'] = $this->getCardid();
+        return $this->params;
+    }    
+
     /* methode(s) d'enregistrement dans la bdd */
     public function insertCompte(){
         $cardId = $this->getCarte()->insertCard();
-        $params = $this->getParams();
-        $params['cardid'] = $cardId;
+        $this->params['cardid'] = $cardId;
         $sql = '
             INSERT INTO `compte` ( 
             `typecompte`,
@@ -131,7 +138,51 @@ class CompteCheque extends Compte{
             :cardid
             )
         ';
-        $this->id = Tools::insertBDD($sql, $params);
+        $this->id = Tools::insertBDD($sql, $this->params);
         return true;
+    }
+
+    public function updateCompte() : bool {
+        $params = $this->getParams();
+        $params['id'] = $this->getId();
+        $sql = '
+            UPDATE `Compte` 
+            SET 
+                `typecompte` = :typecompte,
+                `nom` = :nom ,
+                `prenom` = :prenom ,
+                `numcompte` = :numcompte ,
+                `numagence` = :numagence ,
+                `rib` = :rib ,
+                `iban` = :iban ,
+                `solde` = :solde ,
+                `devise` = :devise ,
+                `decouvert` = :decouvert, 
+                `cardid` = :cardid
+            WHERE 
+                `id` = :id
+        ';
+        Tools::queryBDD($sql, $params);
+        return true;
+    }
+
+    /**
+     * Get the value of cardid
+     */ 
+    public function getCardid()
+    {
+        return $this->cardid;
+    }
+
+    /**
+     * Set the value of cardid
+     *
+     * @return  self
+     */ 
+    public function setCardid($cardid)
+    {
+        $this->cardid = $cardid;
+
+        return $this;
     }
 }

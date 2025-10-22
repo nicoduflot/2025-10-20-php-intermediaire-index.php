@@ -15,6 +15,7 @@ use Utils\Tools;
     protected float  $decouvert;
     protected string $devise;
     protected $id;
+    protected $params;
 
     /**
      * @param string $nom - nom du détenteur
@@ -231,7 +232,27 @@ use Utils\Tools;
         return $this;
     }
 
-    /* Méthode de l'objet */
+    /**
+     * Set the value of id
+     *
+     * @return  self
+     */ 
+    public function setId($id)
+    {
+        $this->id = $id;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of id
+     */ 
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /* Méthode(s) de l'objet */
 
     public function modifierSolde($montant) : void {
         $this->solde = $this->solde + $montant;
@@ -293,7 +314,7 @@ use Utils\Tools;
 
     /* Crée des paramètre de requête communs à tous les type de compte */
     public function getParams(){
-        $params = [
+        $this->params = [
             'typecompte' => $this->typeCompte(),
             'nom' => $this->nom,
             'prenom' => $this->prenom,
@@ -305,7 +326,7 @@ use Utils\Tools;
             'devise' => $this->devise,
             'decouvert' => $this->decouvert
         ];
-        return $params;
+        return $this->params;
     }
 
     public function insertCompte(){
@@ -336,6 +357,30 @@ use Utils\Tools;
             )
         ';
         $this->id = Tools::insertBDD($sql, $params);
+        return true;
+    }
+
+    public function updateCompte() : bool {
+        $params = $this->getParams();
+        $params['id'] = $this->getId();
+        //var_dump($params);
+        $sql = '
+            UPDATE `Compte` 
+            SET 
+                `typecompte` = :typecompte,
+                `nom` = :nom ,
+                `prenom` = :prenom ,
+                `numcompte` = :numcompte ,
+                `numagence` = :numagence ,
+                `rib` = :rib ,
+                `iban` = :iban ,
+                `solde` = :solde ,
+                `devise` = :devise ,
+                `decouvert` = :decouvert 
+            WHERE 
+                `id` = :id
+        ';
+        Tools::queryBDD($sql, $params);
         return true;
     }
  }
